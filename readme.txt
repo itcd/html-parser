@@ -1,0 +1,1 @@
+This is a HTML parser that fetches data from Yahoo Finance.
