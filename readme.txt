@@ -1,4 +1,4 @@
-This is a HTML parser that fetches data from Yahoo Finance.
+This is a HTML parser written in Python. It fetches the Day's Range of a list of securities from Yahoo Finance.
 
 Sample output:
 iShares Nasdaq Biotechnology (IBB)	228.14	234.90
@@ -12,4 +12,4 @@ PowerShares Global Clean Energy (PBD)	12.95	13.12
  Defense (ITA)	107.93	109.36
 WisdomTree Europe SmallCap Dividend (DFE)	62.08	62.64
 
-Updated on 2014-5-2
+Updated on 2014-5-2.
