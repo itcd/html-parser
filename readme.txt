@@ -1,4 +1,4 @@
-This is a HTML parser written in Python 2.7.6. It fetches the name and quotes of securities from Yahoo Finance.
+This is a HTML parser written in Python 2.7.6. It fetches the names, percentage changed, date of quotes and the day's range of securities from Yahoo Finance.
 
 Sample output:
 Global X Social Media Index ETF (SOCL)	-0.91%	02/05/2014	17.41	17.83

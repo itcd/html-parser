@@ -52,6 +52,7 @@ class MyHTMLParser(HTMLParser):
         self.previous_data = data
 
     def handle_entityref(self, name):
+        # for stock names with the symbol &, save the part before & for later use
         if "amp"==name and -1!=string.find(self.get_starttag_text(), "<h2>"):
             self.text_before_amp = self.previous_data
 
