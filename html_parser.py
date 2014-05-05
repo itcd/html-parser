@@ -65,9 +65,10 @@ class MyHTMLParser(HTMLParser):
         if "amp" == name and -1 != string.find(self.get_starttag_text(), "<h2>"):
             self.text_before_amp = self.previous_data
 
-for t in ticker_list:
-    ticker = t
-    parser = MyHTMLParser()
-    f = urllib.urlopen("http://finance.yahoo.com/q?s=%s" % ticker)
-    html_string = f.read()
-    parser.feed(html_string)
+if __name__ == "__main__":
+    for t in ticker_list:
+        ticker = t
+        parser = MyHTMLParser()
+        f = urllib.urlopen("http://finance.yahoo.com/q?s=%s" % ticker)
+        html_string = f.read()
+        parser.feed(html_string)
