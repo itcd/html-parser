@@ -83,3 +83,4 @@ if __name__ == "__main__":
         f = urllib.urlopen("http://finance.yahoo.com/q?s=%s" % t)
         html_string = f.read()
         parser.feed(html_string)
+        parser.close()
