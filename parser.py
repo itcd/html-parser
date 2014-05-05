@@ -76,7 +76,11 @@ class MyHTMLParser(HTMLParser):
             self.text_before_amp = self.previous_data
 
 if __name__ == "__main__":
+    # default values
     ticker_list = ["ibb", "ita", "qqq", "xsd"]
+
+    # arguments can be passed through command line.
+    # usage: python parser.py "ibb ita qqq xsd" > output.txt
     if len(sys.argv) > 1:
         ticker_list = sys.argv[1].split()
 
