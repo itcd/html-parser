@@ -8,8 +8,6 @@ Created on Thu May 01 22:43:26 2014
 import time, urllib, sys
 from HTMLParser import HTMLParser
 
-ticker_list = ["socl", "ibb", "pnqi", "eirl", "ita", "iai", "xsd", "vbk", "dfe", "qqq", "ewi", "pbd"]
-
 class MyHTMLParser(HTMLParser):
     previous_data = ""
     text_before_amp = ""
@@ -32,6 +30,7 @@ class MyHTMLParser(HTMLParser):
         
         # get market time and print its date if the data exists
         # in market time the string is "Mon, May 5, 2014, 10:50AM EDT - US Markets close in 5 hrs and 10 mins"
+        # after market time the string is "Mon, May 5, 2014, 5:41pm EDT - US Markets are closed"
         if -1 != str(starttag_text).find("yfs_market_time") and -1 != data.find(","):
             s = data.split(",")
             t = time.strptime(s[0] + s[1] + s[2], "%a %b %d %Y")
@@ -55,9 +54,8 @@ class MyHTMLParser(HTMLParser):
                 sys.stdout.write("-")
             sys.stdout.write(data.strip("()"))
 
-        # get date of quote if it exists. the date of quote only appears after market time
-        # in market time the string is "10:50AM EDT"
-        # after market time the string is "May 5, 10:50AM EDT"
+        # get date of quote if it exists. the string with date "May 5, 10:50AM EDT" only appears the next day after market closed.
+        # in market hours the string is "10:50AM EDT", after market hours the string is "4:00PM EDT"
         if -1 != str(starttag_text).find("yfs_t53_%s" % self.ticker.lower()) and -1 != data.find(","):
             t = time.strptime(data.split(",")[0] + time.strftime(" %Y"), "%b %d %Y")
             sys.stdout.write("\t" + time.strftime("%d/%m/%Y", t))
@@ -77,7 +75,11 @@ class MyHTMLParser(HTMLParser):
         if "amp" == name and -1 != str(self.get_starttag_text()).find("<h2>"):
             self.text_before_amp = self.previous_data
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
+    ticker_list = ["ibb", "ita", "qqq", "xsd"]
+    if len(sys.argv) > 1:
+        ticker_list = sys.argv[1].split()
+
     for t in ticker_list:
         parser = MyHTMLParser(t)
         filehandle = urllib.urlopen("http://finance.yahoo.com/q?s=%s" % t)

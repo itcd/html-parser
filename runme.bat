@@ -1,1 +1,0 @@
-python html_parser.py > output.txt
