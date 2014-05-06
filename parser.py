@@ -16,7 +16,6 @@ class MyHTMLParser(HTMLParser):
     def __init__(self, t):
         HTMLParser.__init__(self)
         self.ticker = t
-        print
 
     def handle_starttag(self, tag, attrs):
         # get arrow diection: up/positive or down/negative
@@ -50,7 +49,7 @@ class MyHTMLParser(HTMLParser):
             sys.stdout.write("\t" + data)
             
         # get percentage change. the tag id is "yfs_p43_%s" in or after trading hours, or "yfs_p20_%s" pre-market.
-        if (-1 != str(starttag_text).find("yfs_p20_%s" % self.ticker.lower()) or -1 != str(starttag_text).find("yfs_p43_%s" % self.ticker.lower())) and len(data.strip()) > 0:
+        if (-1 != str(starttag_text).find("yfs_p43_%s" % self.ticker.lower()) or -1 != str(starttag_text).find("yfs_p20_%s" % self.ticker.lower())) and len(data.strip()) > 0:
             sys.stdout.write("\t")
             if self.negative:
                 sys.stdout.write("-")
@@ -94,3 +93,4 @@ if __name__ == "__main__":
         html_string = filehandle.read()
         parser.feed(html_string)
         parser.close()
+        print
