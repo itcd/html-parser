@@ -27,7 +27,7 @@ class MyHTMLParser(HTMLParser):
 
     def handle_data(self, data):
         starttag_text = self.get_starttag_text()
-        
+
         # get market time and print its date
         # pre market string "Tue, May 6, 2014, 9:02AM EDT - US Markets open in 28 mins" "Tue, May 6, 2014, 8:57AM EDT - U.S. Markets open in 33 mins."
         # in market string "Mon, May 5, 2014, 10:50AM EDT - US Markets close in 5 hrs and 10 mins"
@@ -47,7 +47,7 @@ class MyHTMLParser(HTMLParser):
         # get quote
         if -1 != str(starttag_text).find("yfs_l84_%s" % self.ticker.lower()) and len(data.strip()) > 0:
             sys.stdout.write("\t" + data)
-            
+
         # get percentage change. the tag id is "yfs_p43_%s" in or after trading hours, or "yfs_p20_%s" pre-market.
         if (-1 != str(starttag_text).find("yfs_p43_%s" % self.ticker.lower()) or -1 != str(starttag_text).find("yfs_p20_%s" % self.ticker.lower())) and len(data.strip()) > 0:
             sys.stdout.write("\t")

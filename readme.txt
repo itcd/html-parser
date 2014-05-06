@@ -1,6 +1,5 @@
 This is a HTML parser written in Python 2.7.6.
 It fetches the dates, names, quotes, percentages change and the day's ranges of stocks from Yahoo Finance.
-Arguments can be passed through command line.
 Usage: python parser.py "ibb socl pnqi xsd ita iai vbk qqq ewi dfe pbd eirl" > output.txt
 
 Sample output in different trading sessions:
