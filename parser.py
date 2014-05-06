@@ -49,7 +49,7 @@ class MyHTMLParser(HTMLParser):
         if -1 != str(starttag_text).find("yfs_l84_%s" % self.ticker.lower()) and len(data.strip()) > 0:
             sys.stdout.write("\t" + data)
             
-        # get percentage change. the tag id could be "yfs_p20_%s" or "yfs_p43_%s".
+        # get percentage change. the tag id is "yfs_p43_%s" in or after trading hours, or "yfs_p20_%s" pre-market.
         if (-1 != str(starttag_text).find("yfs_p20_%s" % self.ticker.lower()) or -1 != str(starttag_text).find("yfs_p43_%s" % self.ticker.lower())) and len(data.strip()) > 0:
             sys.stdout.write("\t")
             if self.negative:
