@@ -28,9 +28,10 @@ class MyHTMLParser(HTMLParser):
     def handle_data(self, data):
         starttag_text = self.get_starttag_text()
         
-        # get market time and print its date if the data exists
-        # in market time the string is "Mon, May 5, 2014, 10:50AM EDT - US Markets close in 5 hrs and 10 mins"
-        # after market time the string is "Mon, May 5, 2014, 5:41pm EDT - US Markets are closed"
+        # get market time and print its date
+        # pre market string "Tue, May 6, 2014, 9:02AM EDT - US Markets open in 28 mins" "Tue, May 6, 2014, 8:57AM EDT - U.S. Markets open in 33 mins."
+        # in market string "Mon, May 5, 2014, 10:50AM EDT - US Markets close in 5 hrs and 10 mins"
+        # after market string "Mon, May 5, 2014, 5:41pm EDT - US Markets are closed"
         if -1 != str(starttag_text).find("yfs_market_time") and -1 != data.find(","):
             s = data.split(",")
             t = time.strptime(s[0] + s[1] + s[2], "%a %b %d %Y")
@@ -54,8 +55,10 @@ class MyHTMLParser(HTMLParser):
                 sys.stdout.write("-")
             sys.stdout.write(data.strip("()"))
 
-        # get date of quote if it exists. the string with date "May 5, 10:50AM EDT" only appears the next day after market closed.
-        # in market hours the string is "10:50AM EDT", after market hours the string is "4:00PM EDT"
+        # get date of quote if it exists. the date only appears before market open.
+        # pre market string "May 5, 4:00PM EDT"
+        # in market string "10:50AM EDT"
+        # after market string "4:00PM EDT"
         if -1 != str(starttag_text).find("yfs_t53_%s" % self.ticker.lower()) and -1 != data.find(","):
             t = time.strptime(data.split(",")[0] + time.strftime(" %Y"), "%b %d %Y")
             sys.stdout.write("\t" + time.strftime("%d/%m/%Y", t))
