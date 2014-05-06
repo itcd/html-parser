@@ -32,7 +32,7 @@ In trading hours
 
 After-hours
 
-I have written a blog article on this program
+I have written a blog article (in Chinese) on this program
 http://blog.csdn.net/winark/article/details/24890513
 
 For more information on HTMLParser, see
