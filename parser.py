@@ -16,6 +16,7 @@ class MyHTMLParser(HTMLParser):
     def __init__(self, t):
         HTMLParser.__init__(self)
         self.ticker = t
+        print
 
     def handle_starttag(self, tag, attrs):
         # get arrow diection: up/positive or down/negative
@@ -35,12 +36,12 @@ class MyHTMLParser(HTMLParser):
         if -1 != str(starttag_text).find("yfs_market_time") and -1 != data.find(","):
             s = data.split(",")
             t = time.strptime(s[0] + s[1] + s[2], "%a %b %d %Y")
-            sys.stdout.write(time.strftime("%d/%m/%Y", t) + "\t")
+            sys.stdout.write(time.strftime("%d/%m/%Y", t))
 
         # get stock/fund name
         if -1 != data.find(("(%s)" % self.ticker).upper()) and -1 != str(starttag_text).find("<h2>"):
-            sys.stdout.write(self.ticker + "\t")
-            if ""!=self.text_before_amp:
+            sys.stdout.write("\t" + self.ticker + "\t")
+            if len(self.text_before_amp.strip()) > 0:
                 sys.stdout.write(self.text_before_amp + "&")
             sys.stdout.write(data)
 
@@ -69,7 +70,7 @@ class MyHTMLParser(HTMLParser):
 
         # get the day's range - upper value
         if -1 != str(starttag_text).find("yfs_h53_%s" % self.ticker.lower()):
-            print "\t" + data
+            sys.stdout.write("\t" + data)
 
         self.previous_data = data
 
