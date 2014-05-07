@@ -1,1 +1,1 @@
-python parser.py "ibb socl pnqi xsd ita iai vbk qqq ewi dfe pbd eirl ewp ezu" > output.txt
+python parser.py "dfe ezu eirl ewp ewi ita xsd pbd qqq vbk psct iai ibb pnqi socl" > output.txt
