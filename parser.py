@@ -80,8 +80,8 @@ class MyHTMLParser(HTMLParser):
             self.text_before_amp += self.previous_data + "&"
 
 if __name__ == "__main__":
-    # default values (ETF names with different numbers of "&")
-    ticker_list = ["qqq", "spy", "xme", "xop"]
+    # test ETF names with symbols "&", "-", "+", "$", "/" and "™" (tm)
+    ticker_list = ["qqq", "spy", "xme", "xop", "fxi", "veu", "tlt", "lqd", "shm", "schd", "sche", "schv"]
 
     # arguments can be passed through command line.
     # usage: python parser.py "ibb ita qqq xsd" > output.txt
