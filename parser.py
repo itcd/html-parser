@@ -41,7 +41,8 @@ class MyHTMLParser(HTMLParser):
         if -1 != data.find(("(%s)" % self.ticker).upper()) and -1 != str(starttag_text).find("<h2>"):
             sys.stdout.write("\t" + self.ticker + "\t")
             if len(self.text_before_amp.strip()) > 0:
-                sys.stdout.write(self.text_before_amp + "&")
+                sys.stdout.write(self.text_before_amp)
+                self.text_before_amp = ""
             sys.stdout.write(data)
 
         # get quote
@@ -76,11 +77,11 @@ class MyHTMLParser(HTMLParser):
     def handle_entityref(self, name):
         # for stock names with the symbol &, save the part before & for later use
         if "amp" == name and -1 != str(self.get_starttag_text()).find("<h2>"):
-            self.text_before_amp = self.previous_data
+            self.text_before_amp += self.previous_data + "&"
 
 if __name__ == "__main__":
-    # default values
-    ticker_list = ["ibb", "ita", "qqq", "xsd"]
+    # default values (ETF names with different numbers of "&")
+    ticker_list = ["qqq", "spy", "xme", "xop"]
 
     # arguments can be passed through command line.
     # usage: python parser.py "ibb ita qqq xsd" > output.txt
