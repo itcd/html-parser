@@ -1,1 +1,2 @@
 python parser.py "doo dfe scz idv vlue ezu exi fez piz schc ewp ewi xli ixj jki vis eufn rpv ita schg pkw voe ezm eirl qqq vgt vbk socl pnqi ibb" > output.txt
+ren output.txt quotes_%DATE:/=%_%time:~0,2%%time:~3,2%.txt
