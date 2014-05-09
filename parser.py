@@ -91,7 +91,7 @@ if __name__ == "__main__":
     ticker_list = ["qqq", "spy", "xme", "xop", "fxi", "veu", "tlt", "lqd", "shm", "schd", "sche", "schv"]
 
     # arguments can be passed through command line.
-    # usage: python parser.py "ibb ita qqq xsd" > output.txt
+    # usage: python parser.py "qqq spy xme xop" > output.txt
     if len(sys.argv) > 1:
         ticker_list = sys.argv[1].split()
 
