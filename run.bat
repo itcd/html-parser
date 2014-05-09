@@ -1,1 +1,1 @@
-python parser.py "doo dfe scz idv ezu piz schc ewp ewi ita eirl qqq vgt rpg vbk psct xsd socl pnqi ibb" > output.txt
+python parser.py "doo dfe scz idv vlue ezu exi fez piz schc ewp ewi xli ixj jki vis eufn rpv ita schg pkw voe ezm eirl qqq vgt vbk socl pnqi ibb" > output.txt
