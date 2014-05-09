@@ -12,6 +12,7 @@ class MyHTMLParser(HTMLParser):
     previous_data = ""
     text_before_amp = ""
     negative = False
+    date_of_quote = ""
 
     def __init__(self, t):
         HTMLParser.__init__(self)
@@ -56,13 +57,13 @@ class MyHTMLParser(HTMLParser):
                 sys.stdout.write("-")
             sys.stdout.write(data.strip("()"))
 
-        # get date of quote if it exists. the date only appears before market open.
+        # get date of quote if it exists. the date only appears in pre-market sessions.
         # pre market string "May 5, 4:00PM EDT"
         # in market string "10:50AM EDT"
         # after market string "4:00PM EDT"
         if -1 != str(starttag_text).find("yfs_t53_%s" % self.ticker.lower()) and -1 != data.find(","):
             t = time.strptime(data.split(",")[0] + time.strftime(" %Y"), "%b %d %Y")
-            sys.stdout.write("\t" + time.strftime("%d/%m/%Y", t))
+            self.date_of_quote = "\t" + time.strftime("%d/%m/%Y", t)
 
         # get the day's range - lower value
         if -1 != str(starttag_text).find("yfs_g53_%s" % self.ticker.lower()) and len(data.strip(" -")) > 0:
@@ -79,6 +80,12 @@ class MyHTMLParser(HTMLParser):
         if "amp" == name and -1 != str(self.get_starttag_text()).find("<h2>"):
             self.text_before_amp += self.previous_data + "&"
 
+    def close(self):
+        # print date of quote at the end of the output
+        print parser.date_of_quote
+
+        HTMLParser.close(self)
+
 if __name__ == "__main__":
     # default values for testing names with symbols "&", "-", "+", "$", "/" and "™" (tm)
     ticker_list = ["qqq", "spy", "xme", "xop", "fxi", "veu", "tlt", "lqd", "shm", "schd", "sche", "schv"]
@@ -94,4 +101,3 @@ if __name__ == "__main__":
         html_string = filehandle.read()
         parser.feed(html_string)
         parser.close()
-        print
