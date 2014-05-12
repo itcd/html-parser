@@ -11,8 +11,15 @@ from HTMLParser import HTMLParser
 class MyHTMLParser(HTMLParser):
     previous_data = ""
     text_before_amp = ""
-    negative = False
-    date_of_quote = ""
+    current_date = ""
+    security_name = ""
+    open_price = ""
+    high_price = ""
+    low_price = ""
+    close_price = ""
+    minus_sign = ""
+    percentage_change = ""
+    quote_date = ""
 
     def __init__(self, t):
         HTMLParser.__init__(self)
@@ -22,9 +29,9 @@ class MyHTMLParser(HTMLParser):
         # get arrow diection: up/positive or down/negative
         for attr in attrs:
             if "up_g time_rtq_content"==attr[1]:
-                self.negative = False
+                self.minus_sign = ""
             if "down_r time_rtq_content"==attr[1]:
-                self.negative = True
+                self.minus_sign = "-"
 
     def handle_data(self, data):
         starttag_text = self.get_starttag_text()
@@ -36,42 +43,43 @@ class MyHTMLParser(HTMLParser):
         if -1 != str(starttag_text).find("yfs_market_time") and -1 != data.find(","):
             s = data.split(",")
             t = time.strptime(s[0] + s[1] + s[2], "%a %b %d %Y")
-            sys.stdout.write(time.strftime("%d/%m/%Y", t))
+            self.current_date = time.strftime("%d/%m/%Y", t)
 
         # get stock/fund name
         if -1 != data.find(("(%s)" % self.ticker).upper()) and -1 != str(starttag_text).find("<h2>"):
-            sys.stdout.write("\t" + self.ticker + "\t")
+            prefix = ""
             if len(self.text_before_amp.strip()) > 0:
-                sys.stdout.write(self.text_before_amp)
+                prefix = self.text_before_amp
                 self.text_before_amp = ""
-            sys.stdout.write(data)
+            self.security_name = "\t" + prefix + data + "\t" + self.ticker
 
-        # get quote
+        # get current/closing price
         if -1 != str(starttag_text).find("yfs_l84_%s" % self.ticker.lower()) and len(data.strip()) > 0:
-            sys.stdout.write("\t" + data)
+            self.close_price = "\t" + data
 
         # get percentage change. the tag id is "yfs_p43_%s" in or after trading hours, or "yfs_p20_%s" pre-market.
         if (-1 != str(starttag_text).find("yfs_p43_%s" % self.ticker.lower()) or -1 != str(starttag_text).find("yfs_p20_%s" % self.ticker.lower())) and len(data.strip()) > 0:
-            sys.stdout.write("\t")
-            if self.negative:
-                sys.stdout.write("-")
-            sys.stdout.write(data.strip("()"))
+            self.percentage_change = "\t" + self.minus_sign + data.strip("()")
 
-        # get date of quote if it exists. the date only appears in pre-market sessions.
+        # get date of quotes if it exists. the date only appears in pre-market sessions.
         # pre market string "May 5, 4:00PM EDT"
         # in market string "10:50AM EDT"
         # after market string "4:00PM EDT"
         if -1 != str(starttag_text).find("yfs_t53_%s" % self.ticker.lower()) and -1 != data.find(","):
             t = time.strptime(data.split(",")[0] + time.strftime(" %Y"), "%b %d %Y")
-            self.date_of_quote = "\t" + time.strftime("%d/%m/%Y", t)
+            self.quote_date = "\t" + time.strftime("%d/%m/%Y", t)
+
+        # get opening price. the string is "N/A" in trading hours
+        if -1 != self.previous_data.find("Open:") and -1 != str(starttag_text).find("yfnc_tabledata1"):
+            self.open_price = "\t" + data
 
         # get the day's range - lower value
         if -1 != str(starttag_text).find("yfs_g53_%s" % self.ticker.lower()) and len(data.strip(" -")) > 0:
-            sys.stdout.write("\t" + data)
+            self.low_price = "\t" + data
 
         # get the day's range - upper value
         if -1 != str(starttag_text).find("yfs_h53_%s" % self.ticker.lower()):
-            sys.stdout.write("\t" + data)
+            self.high_price = "\t" + data
 
         self.previous_data = data
 
@@ -81,8 +89,8 @@ class MyHTMLParser(HTMLParser):
             self.text_before_amp += self.previous_data + "&"
 
     def close(self):
-        # print date of quote at the end of the output
-        print parser.date_of_quote
+        # print quotes before closing the parser
+        print self.current_date + self.security_name + self.open_price + self.high_price + self.low_price + self.close_price + self.percentage_change + self.quote_date
 
         HTMLParser.close(self)
 
