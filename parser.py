@@ -69,15 +69,15 @@ class MyHTMLParser(HTMLParser):
             t = time.strptime(data.split(",")[0] + time.strftime(" %Y"), "%b %d %Y")
             self.quote_date = "\t" + time.strftime("%d/%m/%Y", t)
 
-        # get opening price. the string is "N/A" in trading hours
+        # get opening price. the string is "N/A" in the beginning of trading hours
         if -1 != self.previous_data.find("Open:") and -1 != str(starttag_text).find("yfnc_tabledata1"):
             self.open_price = "\t" + data
 
-        # get the day's range - lower value
+        # get the day's range - low value
         if -1 != str(starttag_text).find("yfs_g53_%s" % self.ticker.lower()) and len(data.strip(" -")) > 0:
             self.low_price = "\t" + data
 
-        # get the day's range - upper value
+        # get the day's range - high value
         if -1 != str(starttag_text).find("yfs_h53_%s" % self.ticker.lower()):
             self.high_price = "\t" + data
 
@@ -89,10 +89,10 @@ class MyHTMLParser(HTMLParser):
             self.text_before_amp += self.previous_data + "&"
 
     def close(self):
-        # print quotes before closing the parser
-        print self.current_date + self.security_name + self.open_price + self.high_price + self.low_price + self.close_price + self.percentage_change + self.quote_date
-
         HTMLParser.close(self)
+
+        # print quotes
+        print self.current_date + self.security_name + self.open_price + self.high_price + self.low_price + self.close_price + self.percentage_change + self.quote_date
 
 if __name__ == "__main__":
     # default values for testing names with symbols "&", "-", "+", "$", "/" and "™" (tm)
