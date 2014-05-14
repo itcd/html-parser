@@ -13,10 +13,12 @@ class MyHTMLParser(HTMLParser):
     text_before_amp = ""
     current_date = ""
     security_name = ""
+    volume = ""
     open_price = ""
     high_price = ""
     low_price = ""
     close_price = ""
+    previous_close_price = ""
     minus_sign = ""
     percentage_change = ""
     quote_date = ""
@@ -69,17 +71,25 @@ class MyHTMLParser(HTMLParser):
             t = time.strptime(data.split(",")[0] + time.strftime(" %Y"), "%b %d %Y")
             self.quote_date = "\t" + time.strftime("%d/%m/%Y", t)
 
-        # get opening price. the string is "N/A" in the beginning of trading hours
-        if -1 != self.previous_data.find("Open:") and -1 != str(starttag_text).find("yfnc_tabledata1"):
-            self.open_price = "\t" + data
+        if -1 != str(starttag_text).find("yfnc_tabledata1"):
+            # get previous close price
+            if -1 != self.previous_data.find("Prev Close:"):
+                self.previous_close_price = "\t" + data
+            # get opening price. open price is "N/A" in the beginning of trading hours
+            if -1 != self.previous_data.find("Open:"):
+                self.open_price = "\t" + data
 
-        # get the day's range - low value
+        # get the day's range - low
         if -1 != str(starttag_text).find("yfs_g53_%s" % self.ticker.lower()) and len(data.strip(" -")) > 0:
             self.low_price = "\t" + data
 
-        # get the day's range - high value
+        # get the day's range - high
         if -1 != str(starttag_text).find("yfs_h53_%s" % self.ticker.lower()):
             self.high_price = "\t" + data
+
+        # get trading volume
+        if -1 != str(starttag_text).find("yfs_v53_%s" % self.ticker.lower()):
+            self.volume = "\t" + data
 
         self.previous_data = data
 
@@ -90,9 +100,7 @@ class MyHTMLParser(HTMLParser):
 
     def close(self):
         HTMLParser.close(self)
-
-        # print quotes
-        print self.current_date + self.security_name + self.open_price + self.high_price + self.low_price + self.close_price + self.percentage_change + self.quote_date
+        print self.current_date + self.security_name + self.volume + self.open_price + self.high_price + self.low_price + self.close_price + self.previous_close_price + self.percentage_change + self.quote_date
 
 if __name__ == "__main__":
     # default values for testing names with symbols "&", "-", "+", "$", "/" and "™" (tm)
