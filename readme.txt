@@ -1,8 +1,9 @@
-This is a HTML parser written in Python 2.7.6.
-It fetches the dates, names, quotes, percentage changes and day's ranges of stocks from Yahoo Finance.
+This is a HTML parser which fetches the quotes of stocks from Yahoo Finance. It is written and tested in Python 2.7.6. 
 
 Usage: python parser.py "ibb socl pnqi xsd ita iai vbk qqq ewi dfe pbd eirl" > output.txt
+
 Sample output in different trading sessions:
+date	ticker	name	close	change	low	high
 
 After hours
 05/05/2014	ibb	iShares Nasdaq Biotechnology (IBB)	233.28	1.85%	225.34	233.28
