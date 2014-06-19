@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu May 01 22:43:26 2014
-
+Last updated on 2014-6-19
 @author: Shengzhou
 """
 
@@ -100,6 +100,7 @@ class MyHTMLParser(HTMLParser):
 
     def close(self):
         HTMLParser.close(self)
+        # print as follows: date, name, ticker, volume, open, high, low, close, previous close, change, range and previous date (if the quote is not for today)
         print self.current_date + self.security_name + self.volume + self.open_price + self.high_price + self.low_price + self.close_price + self.previous_close_price + self.percentage_change + self.quote_date
 
 if __name__ == "__main__":
