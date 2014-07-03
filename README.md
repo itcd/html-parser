@@ -1,5 +1,3 @@
-# README #
-
 This is a HTML parser which fetches the quotes of stocks from Yahoo Finance. It is written and tested in Python 2.7.6. 
 
 Usage: python parser.py "ibb socl pnqi xsd ita iai vbk qqq ewi dfe pbd eirl" > output.txt
