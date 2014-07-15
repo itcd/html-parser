@@ -1,4 +1,4 @@
+Echo Launch dir: "%~dp0"
+Echo Current dir: "%CD%"
 SET target_dir="D:/Dropbox/quotes/"
-d:
-cd D:\document\work\html-parser
-call run.bat
+call "%~dp0run.bat"
