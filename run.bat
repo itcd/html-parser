@@ -5,4 +5,4 @@ REM ddmmYYYY_HHMM %date:/=%_%time:~0,2%%time:~3,2%
 SET time_str="~%date:~-4%%date:~3,2%%date:~0,2%_%time:~0,2%%time:~3,2%.txt"
 IF DEFINED target_dir ( SET filename="%target_dir:"=%%time_str:"=%" )
 IF NOT DEFINED target_dir ( SET filename="%~dp0%time_str:"=%" )
-python "%~dp0parser.py" "ewp mlpx soxx socl thd eirl dxjs dfe pbe cqqq kweb pnqi eden pgj epi" > %filename%
+python "%~dp0parser.py" "epi dxjs eden thd pnqi soxx vbk eirl socl dfe mlpx cqqq ewp pbe pgj kweb" > %filename%
